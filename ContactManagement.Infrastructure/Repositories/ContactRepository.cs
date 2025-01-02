@@ -1,4 +1,5 @@
 ﻿using ContactManagement.Domain.Entities;
+using ContactManagement.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactManagement.Infrastructure.Repositories;
