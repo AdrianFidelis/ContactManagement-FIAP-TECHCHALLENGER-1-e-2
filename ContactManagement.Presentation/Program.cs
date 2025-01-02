@@ -1,4 +1,6 @@
+using ContactManagement.Domain.Repositories;
 using ContactManagement.Infrastructure.Data;
+using ContactManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ContactDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Outras configurações
+// Registro do repositório no contêiner DI
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+// Registro dos controladores e serviços adicionais
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

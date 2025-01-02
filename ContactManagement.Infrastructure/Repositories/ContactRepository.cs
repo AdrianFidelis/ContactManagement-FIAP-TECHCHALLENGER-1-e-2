@@ -1,10 +1,11 @@
 ﻿using ContactManagement.Domain.Entities;
+using ContactManagement.Domain.Repositories;
 using ContactManagement.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactManagement.Infrastructure.Repositories;
 
-public class ContactRepository
+public class ContactRepository : IContactRepository
 {
     private readonly ContactDbContext _context;
 
@@ -13,13 +14,19 @@ public class ContactRepository
         _context = context;
     }
 
-    public async Task<List<Contact>> GetAllAsync() => await _context.Contacts.ToListAsync();
+    public async Task<IEnumerable<Contact>> GetAllAsync()
+    {
+        return await _context.Contacts.ToListAsync();
+    }
 
-    public async Task<Contact?> GetByIdAsync(int id) => await _context.Contacts.FindAsync(id);
+    public async Task<Contact?> GetByIdAsync(int id)
+    {
+        return await _context.Contacts.FindAsync(id);
+    }
 
     public async Task AddAsync(Contact contact)
     {
-        await _context.Contacts.AddAsync(contact);
+        _context.Contacts.Add(contact);
         await _context.SaveChangesAsync();
     }
 
@@ -31,7 +38,7 @@ public class ContactRepository
 
     public async Task DeleteAsync(int id)
     {
-        var contact = await GetByIdAsync(id);
+        var contact = await _context.Contacts.FindAsync(id);
         if (contact != null)
         {
             _context.Contacts.Remove(contact);

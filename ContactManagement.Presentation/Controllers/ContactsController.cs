@@ -1,5 +1,5 @@
 ﻿using ContactManagement.Domain.Entities;
-using ContactManagement.Infrastructure.Repositories;
+using ContactManagement.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactManagement.Presentation.Controllers;
@@ -8,9 +8,9 @@ namespace ContactManagement.Presentation.Controllers;
 [Route("api/[controller]")]
 public class ContactsController : ControllerBase
 {
-    private readonly ContactRepository _repository;
+    private readonly IContactRepository _repository;
 
-    public ContactsController(ContactRepository repository)
+    public ContactsController(IContactRepository repository)
     {
         _repository = repository;
     }
