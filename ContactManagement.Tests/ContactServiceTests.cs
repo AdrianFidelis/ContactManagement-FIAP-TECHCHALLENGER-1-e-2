@@ -18,8 +18,27 @@ namespace ContactManagement.Tests
             _mockRepo = new Mock<IContactRepository>();
             _contacts = new List<Contact>
             {
-                new Contact { Id = 1, Name = "João Silva", Email = "joao@email.com", Phone = "11987654321" },
-                new Contact { Id = 2, Name = "Maria Souza", Email = "maria@email.com", Phone = "21987654321" }
+                new Contact
+                {
+                    Id = 1,
+                    Name = "João Silva",
+                    Email = "joao@email.com",
+                    Phone = new Phone { CountryCode = 55, RegionalCode = 11, NumberPhone = 987654321 }
+                },
+                new Contact
+                {
+                    Id = 2,
+                    Name = "Maria Souza",
+                    Email = "maria@email.com",
+                    Phone = new Phone { CountryCode = 55, RegionalCode = 21, NumberPhone = 987654321 }
+                },
+                new Contact
+                {
+                    Id = 3,
+                    Name = "Rodolfo Eugenia",
+                    Email = "mariaemail.com",
+                    Phone = new Phone { CountryCode = 55, RegionalCode = 21, NumberPhone = 987654321 }
+                }
             };
         }
 
@@ -33,7 +52,7 @@ namespace ContactManagement.Tests
             var result = await _mockRepo.Object.GetAllAsync();
 
             // Assert (Verificação)
-            Assert.Equal(2, result.Count());
+            Assert.Equal(3, result.Count());
             Assert.Equal("João Silva", result.First().Name);
         }
 
@@ -55,7 +74,13 @@ namespace ContactManagement.Tests
         public async Task AddContact_ShouldIncreaseListSize()
         {
             // Arrange
-            var newContact = new Contact { Id = 3, Name = "Carlos", Email = "carlos@email.com", Phone = "31987654321" };
+            var newContact = new Contact
+            {
+                Id = 4,
+                Name = "Carlos",
+                Email = "carlos@email.com",
+                Phone = new Phone { CountryCode = 55, RegionalCode = 31, NumberPhone = 987654321 }
+            };
 
             _mockRepo.Setup(repo => repo.AddAsync(newContact)).Callback<Contact>(c => _contacts.Add(c));
 
@@ -63,8 +88,40 @@ namespace ContactManagement.Tests
             await _mockRepo.Object.AddAsync(newContact);
 
             // Assert
-            Assert.Equal(3, _contacts.Count);
+            Assert.Equal(4, _contacts.Count);
             Assert.Contains(_contacts, c => c.Name == "Carlos");
+        }
+
+        [Fact]
+        public async Task UpdateContact_ShouldModifyContactDetails()
+        {
+            // Arrange
+            var contactToUpdate = _contacts.First();
+            contactToUpdate.Name = "João Atualizado";
+
+            _mockRepo.Setup(repo => repo.UpdateAsync(contactToUpdate))
+                     .Callback<Contact>(c => _contacts[0] = c);
+
+            // Act
+            await _mockRepo.Object.UpdateAsync(contactToUpdate);
+
+            // Assert
+            Assert.Equal("João Atualizado", _contacts[0].Name);
+        }
+
+        [Fact]
+        public async Task DeleteContact_ShouldRemoveContactFromList()
+        {
+            // Arrange
+            var contactId = 1;
+            _mockRepo.Setup(repo => repo.DeleteAsync(contactId))
+                     .Callback<int>(id => _contacts.RemoveAll(c => c.Id == id));
+
+            // Act
+            await _mockRepo.Object.DeleteAsync(contactId);
+
+            // Assert
+            Assert.DoesNotContain(_contacts, c => c.Id == contactId);
         }
     }
 }

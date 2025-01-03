@@ -9,10 +9,9 @@ namespace ContactManagement.Domain.Entities
     public class Contact
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string RegionCode { get; set; } 
+        public string Name { get; set; } = string.Empty;
+        public Phone Phone { get; set; } = new Phone();
+        public string Email { get; set; } = string.Empty;        
     }
 
 }

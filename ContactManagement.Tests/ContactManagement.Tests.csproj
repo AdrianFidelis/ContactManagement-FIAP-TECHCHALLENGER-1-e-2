@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ContactManagement.Application\ContactManagement.Application.csproj" />
     <ProjectReference Include="..\ContactManagement.Domain\ContactManagement.Domain.csproj" />
   </ItemGroup>
 

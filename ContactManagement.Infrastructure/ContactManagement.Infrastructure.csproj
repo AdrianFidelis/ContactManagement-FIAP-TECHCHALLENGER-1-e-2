@@ -32,4 +32,8 @@
     <ProjectReference Include="..\ContactManagement.Domain\ContactManagement.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
