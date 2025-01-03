@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ContactManagement.Domain.Entities;
+using System.Text.RegularExpressions;
 
 namespace ContactManagement.Application.Validators
 {
@@ -13,12 +14,22 @@ namespace ContactManagement.Application.Validators
 
             RuleFor(c => c.Email)
                 .NotEmpty().WithMessage("O e-mail é obrigatório")
-                .EmailAddress().WithMessage("E-mail inválido");
+                .Must(BeAValidEmail).WithMessage("E-mail inválido. Deve conter um domínio válido como .com ou .com.br");
 
-            // ✅ Agora validamos o telefone corretamente com um validador separado
             RuleFor(c => c.Phone)
                 .NotNull().WithMessage("O telefone é obrigatório")
-                .SetValidator(new PhoneValidator()); // ✅ Aplica o `PhoneValidator`
+                .SetValidator(new PhoneValidator()); 
         }
+        private bool BeAValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            var emailRegex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$");
+
+            return emailRegex.IsMatch(email);
+        }
+
+
     }
 }
