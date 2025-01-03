@@ -22,7 +22,7 @@ namespace ContactManagement.Application.Validators
             RuleFor(c => c.Phone)
                 .NotEmpty().WithMessage("O telefone é obrigatório")
                 .Matches(@"^\(?\d{2}\)?[\s-]?\d{4,5}[-]?\d{4}$")
-                .WithMessage("O telefone deve estar no formato correto (com DDD e opcionalmente com traço ou espaço).");
+                .WithMessage("O telefone deve estar no formato correto (com DDD e opcionalmente com traço ou espaço - 'XX-XXXXX-XXXX').");
         }
         private bool BeAValidEmail(string email)
         {
