@@ -2,6 +2,10 @@ using ContactManagement.Domain.Repositories;
 using ContactManagement.Infrastructure.Data;
 using ContactManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using ContactManagement.Application.Validators;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +16,20 @@ builder.Services.AddDbContext<ContactDbContext>(options =>
 // Registro do repositório no contêiner DI
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
-// Registro dos controladores e serviços adicionais
+// Adicionando suporte a In-Memory Cache
+builder.Services.AddMemoryCache();
+
+// Registra os controladores
 builder.Services.AddControllers();
+
+// Registra FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+
+// Substitui RegisterValidatorsFromAssemblyContaining<T>()
+builder.Services.AddValidatorsFromAssemblyContaining<ContactValidator>();
+
+// Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
