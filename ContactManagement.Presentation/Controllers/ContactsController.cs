@@ -56,27 +56,6 @@ public class ContactsController : ControllerBase
         return Ok(contact);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int? ddd)
-    {
-        if (!_cache.TryGetValue("contacts", out List<Contact> contacts))
-        {
-            contacts = (await _repository.GetAllAsync()).ToList();
-
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
-
-            _cache.Set("contacts", contacts, cacheOptions);
-        }
-
-        if (ddd.HasValue)
-        {
-            contacts = contacts.Where(c => c.Phone.RegionalCode == ddd.Value).ToList();
-        }
-
-        return Ok(contacts);
-    }
-
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Contact contact)
     {
@@ -116,4 +95,35 @@ public class ContactsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("filterByDDD/{ddd}")]
+    public async Task<IActionResult> GetContactsByDdd(int ddd)
+    {
+        // Chave do cache específica para o DDD
+        var cacheKey = $"contactsByDDD_{ddd}";
+
+        // Tenta recuperar do cache
+        if (!_cache.TryGetValue(cacheKey, out List<Contact> contacts))
+        {
+            // Se não encontrado no cache, busca no repositório
+            contacts = (await _repository.GetAllByDddAsync(ddd)).ToList();
+
+            // Caso não existam contatos, retorna NotFound
+            if (!contacts.Any())
+            {
+                return NotFound($"Nenhum contato encontrado para o DDD {ddd}.");
+            }
+
+            // Configurações de cache (opcionalmente ajustável)
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(10)) // Tempo de vida no cache
+                .SetSlidingExpiration(TimeSpan.FromMinutes(5));  // Tempo sem acesso antes de expirar
+
+            // Armazena no cache
+            _cache.Set(cacheKey, contacts, cacheOptions);
+        }
+
+        return Ok(contacts);
+    }
+
 }

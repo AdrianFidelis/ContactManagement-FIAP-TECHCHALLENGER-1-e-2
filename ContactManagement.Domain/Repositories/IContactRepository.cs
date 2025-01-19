@@ -9,4 +9,5 @@ public interface IContactRepository
     Task AddAsync(Contact contact);
     Task UpdateAsync(Contact contact);
     Task DeleteAsync(int id);
+    Task<IEnumerable<Contact>> GetAllByDddAsync(int ddd);
 }

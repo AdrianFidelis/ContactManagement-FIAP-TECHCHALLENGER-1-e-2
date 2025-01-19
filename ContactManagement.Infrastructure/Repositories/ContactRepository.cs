@@ -45,4 +45,11 @@ public class ContactRepository : IContactRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<IEnumerable<Contact>> GetAllByDddAsync(int ddd)
+    {
+        return await _context.Contacts
+            .Where(c => c.Phone.RegionalCode == ddd) // Filtrar contatos pelo DDD
+            .ToListAsync();
+    }
 }
