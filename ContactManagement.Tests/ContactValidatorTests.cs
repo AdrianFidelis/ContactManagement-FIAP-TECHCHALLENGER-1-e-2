@@ -31,13 +31,13 @@ namespace ContactManagement.Tests
 
         // Teste para E-mail Válido
         [Theory]
-        [InlineData("email@email")]        // ❌ Sem extensão
-        [InlineData("email@email.")]       // ❌ Apenas um ponto no final
-        [InlineData("email@email..com")]   // ❌ Dois pontos consecutivos (CORRIGIDO)
-        [InlineData("email@.com")]         // ❌ Apenas TLD sem domínio
-        [InlineData("email@email.com")]    // ✅ Correto
-        [InlineData("email@email.com.br")] // ✅ Correto
-        [InlineData("email123@site.net")]  // ✅ Correto
+        [InlineData("email@email")]        // Sem extensão
+        [InlineData("email@email.")]       // Apenas um ponto no final
+        [InlineData("email@email..com")]   // Dois pontos consecutivos (CORRIGIDO)
+        [InlineData("email@.com")]         // Apenas TLD sem domínio
+        [InlineData("email@email.com")]    // Correto
+        [InlineData("email@email.com.br")] // Correto
+        [InlineData("email123@site.net")]  // Correto
         public void Email_ShouldBeInvalid_WhenMissingDomainExtension(string invalidEmail)
         {
             var contact = new Contact
@@ -63,8 +63,8 @@ namespace ContactManagement.Tests
 
         // Teste para Código do País inválido
         [Theory]
-        [InlineData(0)]    // ❌ Código do país inválido (menor que 1)
-        [InlineData(1000)] // ❌ Código do país inválido (maior que 999)
+        [InlineData(0)]    //  Código do país inválido (menor que 1)
+        [InlineData(1000)] //  Código do país inválido (maior que 999)
         public void Phone_ShouldBeInvalid_WhenCountryCodeIsIncorrect(int countryCode)
         {
             var contact = new Contact
@@ -82,8 +82,8 @@ namespace ContactManagement.Tests
 
         // Teste para Código Regional (DDD) inválido
         [Theory]
-        [InlineData(0)]  // ❌ Código regional inválido (menor que 10)
-        [InlineData(100)] // ❌ Código regional inválido (maior que 99)
+        [InlineData(0)]  //  Código regional inválido (menor que 10)
+        [InlineData(100)] //  Código regional inválido (maior que 99)
         public void Phone_ShouldBeInvalid_WhenRegionalCodeIsIncorrect(int regionalCode)
         {
             var contact = new Contact
@@ -101,8 +101,8 @@ namespace ContactManagement.Tests
 
         // Teste para Número do Telefone inválido
         [Theory]
-        [InlineData(12345678)]   // ❌ Muito curto (8 dígitos)
-        [InlineData(1234567890)] // ❌ Muito longo (10 dígitos)
+        [InlineData(12345678)]   //  Muito curto (8 dígitos)
+        [InlineData(1234567890)] //  Muito longo (10 dígitos)
         public void Phone_ShouldBeInvalid_WhenNumberPhoneIsIncorrect(int numberPhone)
         {
             var contact = new Contact
