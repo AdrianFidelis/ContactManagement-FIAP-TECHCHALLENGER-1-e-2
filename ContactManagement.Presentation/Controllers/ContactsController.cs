@@ -19,7 +19,6 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet]
-    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         if (!_cache.TryGetValue("contacts", out List<Contact> contacts))
