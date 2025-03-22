@@ -1,4 +1,4 @@
-using ContactManagement.Domain.Repositories;
+Ôªøusing ContactManagement.Domain.Repositories;
 using ContactManagement.Infrastructure.Data;
 using ContactManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +9,11 @@ using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ConfiguraÁ„o do Entity Framework Core
+// Configura√ß√£o do Entity Framework Core
 builder.Services.AddDbContext<ContactDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registro do repositÛrio no contÍiner DI
+// Registro do reposit√≥rio no cont√™iner DI
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 // Adicionando suporte a In-Memory Cache
@@ -29,13 +29,20 @@ builder.Services.AddFluentValidationClientsideAdapters();
 // Substitui RegisterValidatorsFromAssemblyContaining<T>()
 builder.Services.AddValidatorsFromAssemblyContaining<ContactValidator>();
 
-// ConfiguraÁ„o do Swagger
+// Configura√ß√£o do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// ConfiguraÁ„o do pipeline HTTP
+// ‚¨áÔ∏è MIGRATION EXECUTADA NA INICIALIZA√á√ÉO
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ContactDbContext>();
+    db.Database.Migrate(); // ou .EnsureCreated() se voc√™ n√£o estiver usando migrations
+}
+
+// Configura√ß√£o do pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -49,3 +56,5 @@ app.MapControllers();
 app.Run();
 
 public partial class Program { }
+
+
