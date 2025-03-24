@@ -1,46 +1,30 @@
-name: CI - Build & Test
+name: .NET CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
-
-    services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        env:
-          SA_PASSWORD: "Your_password123"
-          ACCEPT_EULA: "Y"
-        ports:
-          - 1433:1433
-        options: >-
-          --health-cmd " /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Your_password123' -Q 'SELECT 1'" 
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    env:
-      ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=TechChallenger;User ID=sa;Password=Your_password123;TrustServerCertificate=True;Encrypt=False"
 
     steps:
     - name: Checkout do código
       uses: actions/checkout@v3
 
-    - name: Instalar .NET 8
+    - name: Instalar o .NET SDK
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: '8.0.x'
 
     - name: Restaurar dependências
-      run: dotnet restore ContactManagement.sln
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build ContactManagement.sln --no-restore --configuration Release
+      run: dotnet build --no-restore
 
-    - name: Executar testes
-      run: dotnet test ContactManagement.sln --no-build --configuration Release --logger "console;verbosity=detailed"
+    - name: Testar
+      run: dotnet test --no-build --verbosity normal
