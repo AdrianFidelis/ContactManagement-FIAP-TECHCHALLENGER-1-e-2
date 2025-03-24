@@ -7,15 +7,15 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net;
-
-public class ContactsIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+public class ContactsIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public ContactsIntegrationTests(WebApplicationFactory<Program> factory)
+    public ContactsIntegrationTests(CustomWebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
     }
+
 
     private async Task<int> CriarContatoTesteAsync()
     {
@@ -92,26 +92,26 @@ public class ContactsIntegrationTests : IClassFixture<WebApplicationFactory<Prog
     [Fact]
     public async Task DeveAtualizarContato()
     {
-        
+
         int id = await CriarContatoTesteAsync();
 
-        
+
         var getResponse = await _client.GetAsync($"/api/contacts/{id}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         var json = await getResponse.Content.ReadAsStringAsync();
 
-        
+
         dynamic contato = JsonConvert.DeserializeObject(json);
         contato.name = "Contato Atualizado";
-        contato.email = "atualizado@email.com";        
+        contato.email = "atualizado@email.com";
 
-        
+
         var content = new StringContent(JsonConvert.SerializeObject(contato), Encoding.UTF8, "application/json");
 
-        
+
         var putResponse = await _client.PutAsync($"/api/contacts/{id}", content);
 
-        
+
         putResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
