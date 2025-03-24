@@ -39,7 +39,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ContactDbContext>();
-    db.Database.Migrate(); // ou .EnsureCreated() se você não estiver usando migrations
+    // Apenas migra se for um provider relacional
+    if (db.Database.IsRelational())
+    {
+        db.Database.Migrate();
+    }
+    // ou .EnsureCreated() se você não estiver usando migrations
 }
 
 // Configuração do pipeline HTTP
