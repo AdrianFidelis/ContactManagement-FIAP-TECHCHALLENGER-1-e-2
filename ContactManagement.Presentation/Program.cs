@@ -35,16 +35,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// ⬇️ MIGRATION EXECUTADA NA INICIALIZAÇÃO
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ContactDbContext>();
-    // Apenas migra se for um provider relacional
+
     if (db.Database.IsRelational())
     {
         db.Database.Migrate();
-    }
-    // ou .EnsureCreated() se você não estiver usando migrations
+    }    
 }
 
 // Configuração do pipeline HTTP
