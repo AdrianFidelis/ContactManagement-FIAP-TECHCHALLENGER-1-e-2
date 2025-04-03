@@ -6,6 +6,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using ContactManagement.Application.Validators;
 using Microsoft.Extensions.Caching.Memory;
+using Prometheus;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,10 +42,10 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ContactDbContext>();
 
-    if (db.Database.IsRelational())
-    {
-        db.Database.Migrate();
-    }    
+    //if (db.Database.IsRelational())
+    //{
+    //    db.Database.Migrate();
+    //}    
 }
 
 // Configuração do pipeline HTTP
@@ -53,9 +55,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// Middleware do Prometheus
+app.UseHttpMetrics(); // Coleta por endpoint (GET /api/contacts, etc.)
+app.MapMetrics();     // Expõe o endpoint /metrics
+
 
 app.Run();
 
