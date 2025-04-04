@@ -24,3 +24,6 @@ jobs:
 
     - name: Rodar testes (unitários + integração)
       run: dotnet test ContactManagement.Tests/ContactManagement.Tests.csproj --no-build --verbosity normal
+
+
+
