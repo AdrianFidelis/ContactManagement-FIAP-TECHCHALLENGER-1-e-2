@@ -23,7 +23,4 @@ jobs:
       run: dotnet restore
 
     - name: Rodar testes (unitários + integração)
-      run: dotnet test ContactManagement.Tests/ContactManagement.Tests.csproj --no-build --verbosity normal
-
-
-
+      run: dotnet test ./ContactManagement.Tests/ContactManagement.Tests.csproj --verbosity normal
