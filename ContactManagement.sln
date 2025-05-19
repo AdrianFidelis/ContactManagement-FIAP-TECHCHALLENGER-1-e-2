@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactManagement.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactManagement.Tests", "ContactManagement.Tests\ContactManagement.Tests.csproj", "{4A63D4BD-96A5-4A90-A8F9-CD802DE03A94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contact.API", "..\Contact.API\Contact.API.csproj", "{920AA5DA-1AA4-4077-9662-452A8E424A14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contact.Persistence.API", "..\Contact.Persistence.API\Contact.Persistence.API.csproj", "{BA45EB17-38AA-443E-9A9A-A6A69751A824}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{4A63D4BD-96A5-4A90-A8F9-CD802DE03A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A63D4BD-96A5-4A90-A8F9-CD802DE03A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A63D4BD-96A5-4A90-A8F9-CD802DE03A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{920AA5DA-1AA4-4077-9662-452A8E424A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{920AA5DA-1AA4-4077-9662-452A8E424A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{920AA5DA-1AA4-4077-9662-452A8E424A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{920AA5DA-1AA4-4077-9662-452A8E424A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA45EB17-38AA-443E-9A9A-A6A69751A824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA45EB17-38AA-443E-9A9A-A6A69751A824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA45EB17-38AA-443E-9A9A-A6A69751A824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA45EB17-38AA-443E-9A9A-A6A69751A824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
