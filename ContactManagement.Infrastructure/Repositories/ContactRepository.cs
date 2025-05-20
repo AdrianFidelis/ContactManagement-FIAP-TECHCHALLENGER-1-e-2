@@ -45,6 +45,7 @@ public class ContactRepository : IContactRepository
             await _context.SaveChangesAsync();
         }
     }
+    
 
     public async Task<IEnumerable<Contact>> GetAllByDddAsync(int ddd)
     {
