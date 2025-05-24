@@ -7,20 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout do código
       uses: actions/checkout@v3
 
-    - name: Instalar .NET SDK
+    - name: Instalar o .NET SDK
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
 
     - name: Restaurar dependências
-      run: dotnet restore ContactManagement/ContactManagement/ContactManagement.sln
+      run: dotnet restore
 
-    - name: Rodar testes (unitários + integração)
-      run: dotnet test ContactManagement/ContactManagement/ContactManagement.sln --no-build --verbosity normal
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Testar
+      run: dotnet test --no-build --verbosity normal
