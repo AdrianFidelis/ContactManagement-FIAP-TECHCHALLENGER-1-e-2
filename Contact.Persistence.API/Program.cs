@@ -6,14 +6,14 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔧 Adiciona o DbContext com banco em memória
+// 🔧 Conecta ao SQL Server usando a string do appsettings.json
 builder.Services.AddDbContext<ContactDbContext>(options =>
-    options.UseInMemoryDatabase("ContactDb"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 🧠 Injeta o repositório
+// 🔧 Injeta repositório da camada Infrastructure
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
-// 🔧 Add controllers e Swagger
+// 🔧 MVC e Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 🚀 Middlewares
+// 🔧 Middlewares padrão
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
