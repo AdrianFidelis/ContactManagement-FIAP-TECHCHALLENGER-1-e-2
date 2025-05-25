@@ -37,5 +37,7 @@ namespace Contact.Persistence.API.Controllers
                 return NotFound();
             return Ok(contact);
         }
+
+
     }
 }
